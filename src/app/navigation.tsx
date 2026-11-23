@@ -137,6 +137,7 @@ export const NAV_SECTIONS: readonly NavSection[] = [
       </svg>
     ),
     items: [
+      { to: '/planner/agenda', label: 'Agenda', icon: calendarIcon },
       {
         to: '/planner/habits',
         label: 'Hábitos',
@@ -153,6 +154,16 @@ export const NAV_SECTIONS: readonly NavSection[] = [
         icon: (
           <svg {...iconProps}>
             <path d="M4 6l2 2 3-3M4 13l2 2 3-3M12 7h8M12 14h8M12 20h8" />
+          </svg>
+        ),
+      },
+      {
+        to: '/planner/events',
+        label: 'Eventos',
+        icon: (
+          <svg {...iconProps}>
+            <rect x="3" y="5" width="18" height="16" rx="2" />
+            <path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5" />
           </svg>
         ),
       },

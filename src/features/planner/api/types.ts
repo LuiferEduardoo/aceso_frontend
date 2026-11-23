@@ -69,3 +69,12 @@ export const TASK_PRIORITY_LABELS: Record<TaskPriority, string> = {
   medium: 'Media',
   high: 'Alta',
 }
+
+export type CalendarEvent = Schemas['CalendarEventRead']
+export type CalendarEventCreate = Schemas['CalendarEventCreate']
+export type CalendarEventUpdate = Schemas['CalendarEventUpdate']
+
+/** Events owned by a task or habit are read-only: edit their owner instead. */
+export function isLinkedEvent(event: Pick<CalendarEvent, 'task_id' | 'habit_id'>): boolean {
+  return event.task_id !== null || event.habit_id !== null
+}

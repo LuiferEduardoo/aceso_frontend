@@ -1,13 +1,12 @@
-import { addMonths, startOfMonth } from 'date-fns'
+import { addMonths, format, startOfMonth } from 'date-fns'
+import { es } from 'date-fns/locale/es'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { monthGrid, today } from '@/shared/lib/dates'
 import { cn } from '@/shared/lib/cn'
-import { Button, Card, ErrorMessage, Modal, Spinner } from '@/shared/ui'
+import { Button, Card, ErrorMessage, Modal, MonthCalendar, MonthNavigator, Spinner } from '@/shared/ui'
 import type { WorkoutSession } from '../../api/types'
 import { useCreateSession, useSessionsInRange } from '../../hooks/useSessions'
-import { MonthCalendar } from './MonthCalendar'
-import { MonthNavigator } from './MonthNavigator'
 import { NewSessionForm } from './NewSessionForm'
 
 const STATUS_STYLES: Record<WorkoutSession['status'], string> = {
@@ -58,6 +57,7 @@ export function SessionsCalendarContainer() {
         month={month}
         days={grid.days}
         onDayClick={setNewDate}
+        dayLabel={(day) => `Añadir el ${format(day, "d 'de' MMMM", { locale: es })}`}
         renderDay={(iso) =>
           (byDay.get(iso) ?? []).map((session) => (
             <Link

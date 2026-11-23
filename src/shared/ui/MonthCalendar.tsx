@@ -11,10 +11,14 @@ interface MonthCalendarProps {
   days: Date[]
   renderDay: (isoDate: string) => ReactNode
   onDayClick?: (isoDate: string) => void
+  /** Accessible name of each day button, describing what clicking it does. */
+  dayLabel?: (day: Date) => string
 }
 
+const defaultDayLabel = (day: Date) => format(day, "EEEE d 'de' MMMM", { locale: es })
+
 /** Presentational month grid; the content of each day is supplied by the caller. */
-export function MonthCalendar({ month, days, renderDay, onDayClick }: MonthCalendarProps) {
+export function MonthCalendar({ month, days, renderDay, onDayClick, dayLabel = defaultDayLabel }: MonthCalendarProps) {
   return (
     <div className="overflow-x-auto">
       <div className="grid min-w-[42rem] grid-cols-7 gap-px rounded-md bg-slate-200 dark:bg-slate-700">
@@ -36,7 +40,7 @@ export function MonthCalendar({ month, days, renderDay, onDayClick }: MonthCalen
               <button
                 type="button"
                 onClick={() => onDayClick?.(iso)}
-                aria-label={`Añadir el ${format(day, "d 'de' MMMM", { locale: es })}`}
+                aria-label={dayLabel(day)}
                 className={cn(
                   'mb-1 rounded px-1 text-xs hover:bg-slate-100 dark:hover:bg-slate-800',
                   isToday(day) && 'bg-emerald-600 font-semibold text-white hover:bg-emerald-700',

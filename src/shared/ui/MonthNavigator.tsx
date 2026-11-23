@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale/es'
-import { Button } from '@/shared/ui'
+import { Button } from './Button'
 
 interface MonthNavigatorProps {
   month: Date
