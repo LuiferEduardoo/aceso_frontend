@@ -1,6 +1,6 @@
 # Aceso Frontend
 
-React SPA for the [Aceso](../aceso_backend) personal training & health backend: gym (exercises, routines, workout calendar), running (training plans, schedule, Strava activities) and health (daily summaries, samples, sleep, Garmin, JSON import).
+React SPA for the [Aceso](../aceso_backend) personal training & health backend: gym (exercises, routines, workout calendar), running (training plans, schedule, Strava activities), health (daily summaries, samples, sleep, Garmin, JSON import) and planner (agenda, habits, tasks, events, Google Calendar).
 
 ## Stack
 
@@ -62,19 +62,21 @@ src/
     auth/       observable token store (localStorage, failure-tolerant)
     lib/        dates, formatting, zod form helpers, query client, lazy-route helper
     ui/         atoms & molecules: Button, Input, Select, Textarea, Checkbox, Modal, Card, Spinner,
-                EmptyState, ErrorMessage, DateRangePicker, DataTable, ConfirmButton, QueryBoundary…
+                EmptyState, ErrorMessage, DateRangePicker, DataTable, ConfirmButton, QueryBoundary,
+                MonthCalendar, MonthNavigator…
   features/
     auth/       login, register, AuthProvider/useAuth
     gym/        exercises (+ photos), routines (ordered targets, apply to date), sessions calendar & detail (sets, intervals)
     running/    plans + planned runs, schedule, activity linking, activities, Strava
     health/     dashboard: summaries table/charts, samples chart, sleep, Garmin, JSON ingest
+    planner/    agenda month view, habits (check-ins, streak stats), tasks, events, Google Calendar
   test/         MSW server, render helper, setup
 ```
 
 Per feature:
 
 - `api/` — typed functions over the shared client (the adapter to the backend). Nothing else talks HTTP.
-- `hooks/` — TanStack Query hooks with stable query keys (`gymKeys`, `runningKeys`, `healthKeys`); mutations invalidate the keys they affect.
+- `hooks/` — TanStack Query hooks with stable query keys (`gymKeys`, `runningKeys`, `healthKeys`, `plannerKeys`); mutations invalidate the keys they affect.
 - `components/` — *containers* (`*Container`, panels) own hooks and state; *presentational* components (forms, lists, tables, charts) only take props.
 - `pages/` — thin route entry points, lazy-loaded per route.
 
@@ -86,7 +88,7 @@ Cross-cutting behavior:
 
 ## Testing
 
-Behavior-first tests with MSW mocking the backend: error normalization, client middleware (bearer, 401 handling), the auth flow (form-urlencoded login, token storage, redirects, 401 logout), exercise creation/conflict, plan creation with validation, and the health dashboard.
+Behavior-first tests with MSW mocking the backend: error normalization, client middleware (bearer, 401 handling), the auth flow (form-urlencoded login, token storage, redirects, 401 logout), exercise creation/conflict, plan creation with validation, the health dashboard, and the planner (habit check-ins, tasks, agenda, events, Google Calendar connect/sync).
 
 ## Known backend gaps
 
@@ -94,4 +96,7 @@ Behavior-first tests with MSW mocking the backend: error normalization, client m
 - **No refresh token / logout endpoint** — tokens last 60 minutes; on expiry the user is sent back to login. Logout only clears the local token.
 - **Strava callback does not redirect back to the SPA** — after consent the browser lands on the backend's JSON response (`{"status": "connected"}`). Return to the app and press *Sync now*.
 - **Exercise photos need storage configured** on the backend (`STORAGE_BACKEND=local` with `UPLOAD_DIR`, or S3/R2 credentials); otherwise uploads fail. Photos are fetched with the bearer token and shown through object URLs.
-- **No connection-status endpoints** for Strava/Garmin, so the UI cannot show whether an account is linked.
+- **No connection-status endpoints** for Strava/Garmin, so the UI cannot show whether an account is linked. For Google, a 404 from `GET /planner/google/calendars` is read as "not connected".
+- **Google callback does not redirect back to the SPA** either (same JSON response as Strava). Return to the agenda, pick a calendar and press *Sincronizar ahora*.
+- **No endpoint returns the selected Google calendar or the last sync time** (only `PUT /planner/google/calendar` echoes them), so the panel cannot preselect the current calendar.
+- **Planner days are America/Bogota** on the backend while datetime inputs use the browser's zone; "today" for habit check-ins is computed in America/Bogota.

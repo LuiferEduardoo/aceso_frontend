@@ -78,3 +78,7 @@ export type CalendarEventUpdate = Schemas['CalendarEventUpdate']
 export function isLinkedEvent(event: Pick<CalendarEvent, 'task_id' | 'habit_id'>): boolean {
   return event.task_id !== null || event.habit_id !== null
 }
+
+export type GoogleCalendar = Schemas['GoogleCalendarRead']
+export type GoogleCalendarLink = Schemas['GoogleCalendarLinkRead']
+export type GoogleSyncResult = Schemas['GoogleSyncResultRead']
