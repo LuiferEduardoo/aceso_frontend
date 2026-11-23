@@ -82,3 +82,4 @@ export function isLinkedEvent(event: Pick<CalendarEvent, 'task_id' | 'habit_id'>
 export type GoogleCalendar = Schemas['GoogleCalendarRead']
 export type GoogleCalendarLink = Schemas['GoogleCalendarLinkRead']
 export type GoogleSyncResult = Schemas['GoogleSyncResultRead']
+export type GoogleStatus = Schemas['GoogleStatusRead']

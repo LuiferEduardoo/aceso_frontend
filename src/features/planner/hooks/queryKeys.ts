@@ -13,6 +13,7 @@ export const plannerKeys = {
   events: () => [...plannerKeys.all, 'events'] as const,
   eventRange: (range: DateRange) => [...plannerKeys.events(), range.from, range.to] as const,
   google: () => [...plannerKeys.all, 'google'] as const,
+  googleStatus: () => [...plannerKeys.google(), 'status'] as const,
   googleCalendars: () => [...plannerKeys.google(), 'calendars'] as const,
   agenda: () => [...plannerKeys.all, 'agenda'] as const,
   agendaRange: (range: DateRange) => [...plannerKeys.agenda(), range.from, range.to] as const,

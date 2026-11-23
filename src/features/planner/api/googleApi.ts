@@ -1,9 +1,11 @@
 import { api, unwrap } from '@/shared/api/client'
-import type { GoogleCalendar, GoogleCalendarLink, GoogleSyncResult } from './types'
+import type { GoogleCalendar, GoogleCalendarLink, GoogleStatus, GoogleSyncResult } from './types'
 
 export const googleApi = {
   authorizationUrl: async (): Promise<string> =>
     (await unwrap(api.GET('/planner/google/authorize'))).authorization_url,
+  /** Connection state and the linked calendar; never calls Google. */
+  status: (): Promise<GoogleStatus> => unwrap(api.GET('/planner/google/status')),
   /** 404 when no Google account is connected. */
   calendars: (): Promise<GoogleCalendar[]> => unwrap(api.GET('/planner/google/calendars')),
   selectCalendar: (calendarId: string): Promise<GoogleCalendarLink> =>

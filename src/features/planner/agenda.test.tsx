@@ -67,8 +67,8 @@ describe('agenda', () => {
         ]
         return HttpResponse.json(agenda)
       }),
-      http.get(apiUrl('/planner/google/calendars'), () =>
-        HttpResponse.json({ detail: 'Google account is not connected' }, { status: 404 }),
+      http.get(apiUrl('/planner/google/status'), () =>
+        HttpResponse.json({ connected: false, calendar_id: null, last_synced_at: null }),
       ),
     )
     const { user } = renderApp({ route: '/planner' })
