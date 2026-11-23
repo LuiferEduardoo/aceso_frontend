@@ -14,8 +14,8 @@ describe('AppShell navigation', () => {
     renderApp({ route: '/gym/sessions' })
     const sidebar = within(await screen.findByRole('complementary'))
 
-    const groups = ['Salud', 'Gimnasio', 'Running'].map((name) => sidebar.getByRole('button', { name }))
-    expect(groups.map((group) => group.getAttribute('aria-expanded'))).toEqual(['false', 'true', 'false'])
+    const groups = ['Salud', 'Gimnasio', 'Running', 'Planificador'].map((name) => sidebar.getByRole('button', { name }))
+    expect(groups.map((group) => group.getAttribute('aria-expanded'))).toEqual(['false', 'true', 'false', 'false'])
     expect(sidebar.getByRole('link', { name: 'Sesiones' })).toHaveAttribute('aria-current', 'page')
     expect(sidebar.queryByRole('link', { name: 'Planes' })).not.toBeInTheDocument()
     // The mobile tab bar shows the current section's pages only.
@@ -47,6 +47,7 @@ describe('AppShell navigation', () => {
       'Salud',
       'Gimnasio',
       'Running',
+      'Planificador',
     ])
 
     await user.selectOptions(select, 'running')

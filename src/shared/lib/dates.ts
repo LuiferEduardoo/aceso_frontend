@@ -55,3 +55,9 @@ export function localInputToIso(value: string): string {
 export function toLocalInput(date: Date): string {
   return format(date, "yyyy-MM-dd'T'HH:mm")
 }
+
+/** Today's ISO calendar date (yyyy-MM-dd) as seen in an IANA time zone. */
+export function todayIn(timeZone: string, now: Date = new Date()): string {
+  // en-CA formats dates as yyyy-MM-dd.
+  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(now)
+}

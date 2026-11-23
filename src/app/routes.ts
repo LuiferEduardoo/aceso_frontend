@@ -2,6 +2,7 @@ import type { RouteObject } from 'react-router'
 import { LoginPage, RegisterPage } from '@/features/auth'
 import { gymRoutes } from '@/features/gym/routes'
 import { healthRoutes } from '@/features/health/routes'
+import { plannerRoutes } from '@/features/planner/routes'
 import { runningRoutes } from '@/features/running/routes'
 import { redirectTo } from '@/shared/lib/redirect'
 import { AppShell } from './AppShell'
@@ -22,7 +23,7 @@ export const routes: RouteObject[] = [
       {
         path: '/',
         Component: AppShell,
-        children: [{ index: true, Component: redirectTo('/gym') }, gymRoutes, runningRoutes, healthRoutes],
+        children: [{ index: true, Component: redirectTo('/gym') }, gymRoutes, runningRoutes, healthRoutes, plannerRoutes],
       },
     ],
   },

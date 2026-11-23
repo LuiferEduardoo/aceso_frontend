@@ -8,7 +8,7 @@ export interface NavItem {
   end?: boolean
 }
 
-export type SectionId = 'gym' | 'running' | 'health'
+export type SectionId = 'gym' | 'running' | 'health' | 'planner'
 
 export interface NavSection {
   id: SectionId
@@ -121,6 +121,29 @@ export const NAV_SECTIONS: readonly NavSection[] = [
         icon: (
           <svg {...iconProps}>
             <path d="M3 12h4l3-8 4 16 3-8h4" />
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    id: 'planner',
+    label: 'Planificador',
+    root: '/planner',
+    icon: (
+      <svg {...iconProps}>
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <path d="M3 10h18M8 3v4M16 3v4M8.5 15l2 2 4-4" />
+      </svg>
+    ),
+    items: [
+      {
+        to: '/planner/habits',
+        label: 'Hábitos',
+        icon: (
+          <svg {...iconProps}>
+            <circle cx="12" cy="12" r="9" />
+            <path d="M8 12l3 3 5-6" />
           </svg>
         ),
       },
