@@ -55,7 +55,7 @@ describe('AppShell navigation', () => {
     await waitFor(() => expect(router.state.location.pathname).toBe('/running/plans'))
     const sidebar = within(screen.getByRole('complementary'))
     expect(sidebar.getByRole('button', { name: 'Running' })).toHaveAttribute('aria-expanded', 'true')
-    expect(sidebar.getByRole('link', { name: 'Planes' })).toHaveAttribute('aria-current', 'page')
+    await waitFor(() => expect(sidebar.getByRole('link', { name: 'Planes' })).toHaveAttribute('aria-current', 'page'))
     expect(screen.getByRole('combobox', { name: 'Cambiar sección' })).toHaveValue('running')
   })
 
