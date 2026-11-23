@@ -10,5 +10,6 @@ export const plannerRoutes: RouteObject = {
     { index: true, Component: redirectTo('/planner/habits') },
     { path: 'habits', lazy: lazyPage(() => import('./pages/HabitsPage'), (m) => m.HabitsPage) },
     { path: 'habits/:habitId', lazy: lazyPage(() => import('./pages/HabitDetailPage'), (m) => m.HabitDetailPage) },
+    { path: 'tasks', lazy: lazyPage(() => import('./pages/TasksPage'), (m) => m.TasksPage) },
   ],
 }

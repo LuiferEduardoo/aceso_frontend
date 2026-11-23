@@ -40,3 +40,32 @@ export function describeFrequency(habit: Pick<Habit, 'frequency' | 'weekdays' | 
   if (habit.frequency === 'times_per_week') return `${habit.times_per_week ?? 0} veces por semana`
   return HABIT_FREQUENCY_LABELS.daily
 }
+
+export type Task = Schemas['TaskRead']
+export type TaskCreate = Schemas['TaskCreate']
+export type TaskUpdate = Schemas['TaskUpdate']
+export type TaskStatus = Schemas['TaskStatus']
+export type TaskPriority = Schemas['TaskPriority']
+
+export interface TaskFilters {
+  status?: TaskStatus
+  due_from?: string
+  due_to?: string
+}
+
+export const TASK_STATUSES: readonly TaskStatus[] = ['todo', 'in_progress', 'done', 'cancelled']
+
+export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
+  todo: 'Pendiente',
+  in_progress: 'En curso',
+  done: 'Hecha',
+  cancelled: 'Cancelada',
+}
+
+export const TASK_PRIORITIES: readonly TaskPriority[] = ['low', 'medium', 'high']
+
+export const TASK_PRIORITY_LABELS: Record<TaskPriority, string> = {
+  low: 'Baja',
+  medium: 'Media',
+  high: 'Alta',
+}

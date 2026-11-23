@@ -147,6 +147,15 @@ export const NAV_SECTIONS: readonly NavSection[] = [
           </svg>
         ),
       },
+      {
+        to: '/planner/tasks',
+        label: 'Tareas',
+        icon: (
+          <svg {...iconProps}>
+            <path d="M4 6l2 2 3-3M4 13l2 2 3-3M12 7h8M12 14h8M12 20h8" />
+          </svg>
+        ),
+      },
     ],
   },
 ]
