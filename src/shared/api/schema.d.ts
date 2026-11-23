@@ -840,8 +840,28 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Google redirect target; the signed `state` identifies the user */
+        /**
+         * Google redirect target; the signed `state` identifies the user
+         * @description Redirects (303) to `{FRONTEND_URL}/planner/agenda?google=connected`, or to `?google=error&reason=<code>` with `access_denied`, `authorization_failed`, `invalid_state`, `missing_scope` or `exchange_failed`.
+         */
         get: operations["google_callback_planner_google_callback_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/planner/google/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Whether Google is connected and which calendar is synced */
+        get: operations["google_status_planner_google_status_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1365,13 +1385,23 @@ export interface components {
             /** Calendar Id */
             calendar_id: string;
         };
-        /** GoogleConnected */
-        GoogleConnected: {
+        /** GoogleStatusRead */
+        GoogleStatusRead: {
             /**
-             * Status
-             * @default connected
+             * Connected
+             * @description Whether the user has Google credentials stored
              */
-            status: string;
+            connected: boolean;
+            /**
+             * Calendar Id
+             * @description Calendar the planner syncs with
+             */
+            calendar_id: string | null;
+            /**
+             * Last Synced At
+             * @description When the last successful sync ran
+             */
+            last_synced_at: string | null;
         };
         /** GoogleSyncResultRead */
         GoogleSyncResultRead: {
@@ -4425,12 +4455,39 @@ export interface operations {
     };
     google_callback_planner_google_callback_get: {
         parameters: {
-            query: {
-                state: string;
+            query?: {
+                state?: string | null;
                 code?: string | null;
                 scope?: string | null;
                 error?: string | null;
             };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            303: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    google_status_planner_google_status_get: {
+        parameters: {
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -4443,16 +4500,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GoogleConnected"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["GoogleStatusRead"];
                 };
             };
         };

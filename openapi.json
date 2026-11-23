@@ -3707,14 +3707,22 @@
           "planner"
         ],
         "summary": "Google redirect target; the signed `state` identifies the user",
+        "description": "Redirects (303) to `{FRONTEND_URL}/planner/agenda?google=connected`, or to `?google=error&reason=<code>` with `access_denied`, `authorization_failed`, `invalid_state`, `missing_scope` or `exchange_failed`.",
         "operationId": "google_callback_planner_google_callback_get",
         "parameters": [
           {
             "name": "state",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "string",
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "State"
             }
           },
@@ -3768,15 +3776,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GoogleConnected"
-                }
-              }
-            }
+          "303": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -3789,6 +3790,32 @@
             }
           }
         }
+      }
+    },
+    "/planner/google/status": {
+      "get": {
+        "tags": [
+          "planner"
+        ],
+        "summary": "Whether Google is connected and which calendar is synced",
+        "operationId": "google_status_planner_google_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleStatusRead"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/planner/google/calendars": {
@@ -5444,16 +5471,46 @@
         ],
         "title": "GoogleCalendarSelect"
       },
-      "GoogleConnected": {
+      "GoogleStatusRead": {
         "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "default": "connected"
+          "connected": {
+            "type": "boolean",
+            "title": "Connected",
+            "description": "Whether the user has Google credentials stored"
+          },
+          "calendar_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calendar Id",
+            "description": "Calendar the planner syncs with"
+          },
+          "last_synced_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Synced At",
+            "description": "When the last successful sync ran"
           }
         },
         "type": "object",
-        "title": "GoogleConnected"
+        "required": [
+          "connected",
+          "calendar_id",
+          "last_synced_at"
+        ],
+        "title": "GoogleStatusRead"
       },
       "GoogleSyncResultRead": {
         "properties": {
